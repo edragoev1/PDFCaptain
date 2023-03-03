@@ -20,7 +20,7 @@ public class PDFCaptain {
 
         Display display = new Display();
         Shell shell = new Shell(display);
-        shell.setText("PrintPDF");
+        shell.setText("PDF Captain");
         shell.setLayout(new GridLayout());
 
         final Table table = new Table(shell,
