@@ -14,6 +14,10 @@ public class FileInfo {
 
     public FileInfo(File file) throws Exception {
         this.fileName = file.getName();
+        final String timestamp = new Timestamp(file.lastModified()).toString();
+        this.creationDate = timestamp.substring(0, timestamp.lastIndexOf('.'));
+        this.fileSize = String.valueOf(file.length());
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         List<String> command = new ArrayList<>();
         command.add("pdfinfo");
@@ -47,8 +51,5 @@ public class FileInfo {
                 }
             }
         }
-        final String timestamp = new Timestamp(file.lastModified()).toString();
-        this.creationDate = timestamp.substring(0, timestamp.lastIndexOf('.'));
-        this.fileSize = String.valueOf(file.length());
     }
 }
