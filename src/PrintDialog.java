@@ -134,7 +134,7 @@ public class PrintDialog {
         button4.setText("Print");
         button4.addListener(SWT.Selection, event -> {
             try {
-                PDFCaptain.printFile(table.getSelection()[0].getText(1),
+                Xpdf.print(table.getSelection()[0].getText(1),
                         items[0].getText(0), text1.getText(), text2.getText());
                 dialog.close();
             } catch (Exception e) {
