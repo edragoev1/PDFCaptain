@@ -4,6 +4,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
@@ -15,7 +16,7 @@ import java.util.Random;
 import static org.eclipse.swt.SWT.KeyDown;
 
 public class PDFCaptain {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         java.util.List<FileInfo> list = getFileList(".");
 
         Display display = new Display();
@@ -30,7 +31,7 @@ public class PDFCaptain {
         table.setHeaderVisible(true);
 
         TableColumn column1 = new TableColumn(table, SWT.NONE);
-        column1.setText("Name");
+        column1.setText("File Name");
         TableColumn column2 = new TableColumn(table, SWT.NONE);
         column2.setText("Title");
         TableColumn column3 = new TableColumn(table, SWT.NONE);
@@ -405,7 +406,7 @@ public class PDFCaptain {
         dialog.open();
     }
 
-    private static java.util.List<FileInfo> getFileList(final String directory) {
+    private static java.util.List<FileInfo> getFileList(final String directory) throws Exception {
         final java.util.List<FileInfo> fileList = new ArrayList<>();
         final File dir = new File(directory);
         if (dir.isDirectory()) {
@@ -416,11 +417,12 @@ public class PDFCaptain {
                         if (file.getName().toLowerCase().endsWith(".pdf")) {
                             final FileInfo fileInfo = new FileInfo();
                             fileInfo.fileName = file.getName();
-                            fileInfo.title = String.valueOf(new Random().nextInt()); // "Test";
+                            fileInfo.setFileInfo(file.getName());
+                            // fileInfo.title = String.valueOf(new Random().nextInt()); // "Test";
                             final String timestamp = new Timestamp(file.lastModified()).toString();
                             fileInfo.creationDate = timestamp.substring(0, timestamp.lastIndexOf('.'));
-                            fileInfo.numberOfPages = String.valueOf(new Random().nextInt());
-                            fileInfo.pageSize = "Letter";
+                            // fileInfo.numberOfPages = String.valueOf(new Random().nextInt());
+                            // fileInfo.pageSize = "Letter";
                             fileInfo.fileSize = String.valueOf(file.length());
                             fileList.add(fileInfo);
                         }
@@ -512,9 +514,35 @@ public class PDFCaptain {
 
 class FileInfo {
     String fileName;
-    String title;
+    String title = "";
     String creationDate;
     String numberOfPages;
-    String pageSize;
+    String pageSize = "";
     String fileSize;
+
+    public void setFileInfo(String fileName) throws Exception {
+        this.fileName = fileName;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        List<String> command = new ArrayList<>();
+        command.add("pdfinfo");
+        command.add(fileName);
+        final var process = new ProcessBuilder(command).start();
+        final var input = process.getInputStream();
+        final var buf = new byte[4096];
+        int len;
+        while ((len = input.read(buf)) != -1) {
+            baos.write(buf, 0, len);
+        }
+        String[] lines = baos.toString().split("\\n");
+        for (String line : lines) {
+            String[] tokens = line.split(":");
+            if (tokens[0].equals("Title")) {
+                title = tokens[1].trim();
+            } else if (tokens[0].equals("Pages")) {
+                numberOfPages = tokens[1].trim();
+            } else if (tokens[0].equals("Page size")) {
+                pageSize = tokens[1].trim();
+            }
+        }
+    }
 }
