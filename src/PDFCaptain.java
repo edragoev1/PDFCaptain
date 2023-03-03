@@ -523,15 +523,15 @@ class FileInfo {
         while ((len = input.read(buf)) != -1) {
             baos.write(buf, 0, len);
         }
-        String[] lines = baos.toString().split("\\n");
+        final String[] lines = baos.toString().split("\\n");
         for (String line : lines) {
-            String[] tokens = line.split(":");
+            final String[] tokens = line.split(":");
             if (tokens[0].equals("Title")) {
                 title = tokens[1].trim();
             } else if (tokens[0].equals("Pages")) {
                 numberOfPages = tokens[1].trim();
             } else if (tokens[0].equals("Page size")) {
-                String[] xy = tokens[1].split(" x ");
+                final String[] xy = tokens[1].split(" x ");
                 if (xy[0].contains(".")) {
                     pageSize = xy[0].substring(0, xy[0].indexOf("."));
                 } else {
@@ -546,7 +546,7 @@ class FileInfo {
             }
         }
         final String timestamp = new Timestamp(file.lastModified()).toString();
-        creationDate = timestamp.substring(0, timestamp.lastIndexOf('.'));
-        fileSize = String.valueOf(file.length());
+        this.creationDate = timestamp.substring(0, timestamp.lastIndexOf('.'));
+        this.fileSize = String.valueOf(file.length());
     }
 }
