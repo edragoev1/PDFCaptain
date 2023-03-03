@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.eclipse.swt.SWT.KeyDown;
 
@@ -178,6 +179,16 @@ public class PDFCaptain {
                         return s1.compareToIgnoreCase(s2) < 0 ? -1 : 1;
                     }
                     return s1.compareToIgnoreCase(s2) < 0 ? 1 : -1;
+                } else if (clickedColumn == columns[1]) {
+                    String s1 = e1[1];
+                    String s2 = e2[1];
+                    if (s1.equalsIgnoreCase(s2)) {
+                        return 0;
+                    }
+                    if (direction == SWT.UP) {
+                        return s1.compareToIgnoreCase(s2) < 0 ? -1 : 1;
+                    }
+                    return s1.compareToIgnoreCase(s2) < 0 ? 1 : -1;
                 } else if (clickedColumn == columns[2]) {
                     Timestamp t1 = Timestamp.valueOf(e1[2]);
                     Timestamp t2 = Timestamp.valueOf(e2[2]);
@@ -188,6 +199,26 @@ public class PDFCaptain {
                         return t1.compareTo(t2) < 0 ? -1 : 1;
                     }
                     return t1.compareTo(t2) < 0 ? 1 : -1;
+                } else if (clickedColumn == columns[3]) {
+                    int i1 = Integer.parseInt(e1[3]);
+                    int i2 = Integer.parseInt(e2[3]);
+                    if (i1 == i2) {
+                        return 0;
+                    }
+                    if (direction == SWT.UP) {
+                        return i1 < i2 ? -1 : 1;
+                    }
+                    return i1 < i2 ? 1 : -1;
+                } else if (clickedColumn == columns[4]) {
+                    String s1 = e1[4];
+                    String s2 = e2[4];
+                    if (s1.equalsIgnoreCase(s2)) {
+                        return 0;
+                    }
+                    if (direction == SWT.UP) {
+                        return s1.compareToIgnoreCase(s2) < 0 ? -1 : 1;
+                    }
+                    return s1.compareToIgnoreCase(s2) < 0 ? 1 : -1;
                 } else if (clickedColumn == columns[5]) {
                     int i1 = Integer.parseInt(e1[5]);
                     int i2 = Integer.parseInt(e2[5]);
@@ -387,7 +418,7 @@ public class PDFCaptain {
                             fileInfo.title = "test";
                             final String timestamp = new Timestamp(file.lastModified()).toString();
                             fileInfo.creationDate = timestamp.substring(0, timestamp.lastIndexOf('.'));
-                            fileInfo.numberOfPages = "100";
+                            fileInfo.numberOfPages = String.valueOf(new Random().nextInt());
                             fileInfo.pageSize = "Letter";
                             fileInfo.fileSize = String.valueOf(file.length());
                             fileList.add(fileInfo);
