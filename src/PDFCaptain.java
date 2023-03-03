@@ -37,6 +37,7 @@ public class PDFCaptain {
         column3.setText("Creation Date");
         TableColumn column4 = new TableColumn(table, SWT.NONE);
         column4.setText("Pages");
+        column4.setAlignment(SWT.RIGHT);
         TableColumn column5 = new TableColumn(table, SWT.NONE);
         column5.setText("Page Size");
         TableColumn column6 = new TableColumn(table, SWT.NONE);
@@ -419,7 +420,7 @@ public class PDFCaptain {
                             final String timestamp = new Timestamp(file.lastModified()).toString();
                             fileInfo.creationDate = timestamp.substring(0, timestamp.lastIndexOf('.'));
                             fileInfo.numberOfPages = String.valueOf(new Random().nextInt());
-                            fileInfo.pageSize = String.valueOf(new Random().nextInt()); // "Letter";
+                            fileInfo.pageSize = "Letter";
                             fileInfo.fileSize = String.valueOf(file.length());
                             fileList.add(fileInfo);
                         }
