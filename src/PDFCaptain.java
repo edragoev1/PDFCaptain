@@ -415,11 +415,11 @@ public class PDFCaptain {
                         if (file.getName().toLowerCase().endsWith(".pdf")) {
                             final FileInfo fileInfo = new FileInfo();
                             fileInfo.fileName = file.getName();
-                            fileInfo.title = "test";
+                            fileInfo.title = String.valueOf(new Random().nextInt()); // "Test";
                             final String timestamp = new Timestamp(file.lastModified()).toString();
                             fileInfo.creationDate = timestamp.substring(0, timestamp.lastIndexOf('.'));
                             fileInfo.numberOfPages = String.valueOf(new Random().nextInt());
-                            fileInfo.pageSize = "Letter";
+                            fileInfo.pageSize = String.valueOf(new Random().nextInt()); // "Letter";
                             fileInfo.fileSize = String.valueOf(file.length());
                             fileList.add(fileInfo);
                         }
