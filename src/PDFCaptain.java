@@ -31,10 +31,16 @@ public class PDFCaptain {
         TableColumn column1 = new TableColumn(table, SWT.NONE);
         column1.setText("Name");
         TableColumn column2 = new TableColumn(table, SWT.NONE);
-        column2.setText("Size");
-        column2.setAlignment(SWT.RIGHT);
+        column2.setText("Title");
         TableColumn column3 = new TableColumn(table, SWT.NONE);
-        column3.setText("Modified");
+        column3.setText("Creation Date");
+        TableColumn column4 = new TableColumn(table, SWT.NONE);
+        column4.setText("Pages");
+        TableColumn column5 = new TableColumn(table, SWT.NONE);
+        column5.setText("Page Size");
+        TableColumn column6 = new TableColumn(table, SWT.NONE);
+        column6.setText("File Size");
+        column6.setAlignment(SWT.RIGHT);
 
         table.addListener(SWT.MouseDoubleClick, event -> {
             TableItem[] items = table.getSelection();
@@ -51,7 +57,14 @@ public class PDFCaptain {
 
         List<String[]> tableData = new ArrayList<>();
         for (FileInfo fileInfo : list) {
-            String[] row = new String[]{fileInfo.fileName, fileInfo.fileSize, fileInfo.modified};
+            String[] row = new String[]{
+                    fileInfo.fileName,
+                    fileInfo.title,
+                    fileInfo.creationDate,
+                    fileInfo.numberOfPages,
+                    fileInfo.pageSize,
+                    fileInfo.fileSize
+            };
             tableData.add(row);
             TableItem item = new TableItem(table, SWT.NONE);
             item.setText(row);
@@ -63,13 +76,23 @@ public class PDFCaptain {
         table.addListener(SWT.SetData, event -> {
             TableItem item = (TableItem) event.item;
             String[] row = tableData.get(table.indexOf(item));
-            item.setText(new String[]{row[0], row[1], row[2]});
+            item.setText(new String[]{
+                    row[0],
+                    row[1],
+                    row[2],
+                    row[3],
+                    row[4],
+                    row[5]
+            });
         });
 
         Listener sortListener = getSortListener(table, tableData);
         column1.addListener(SWT.Selection, sortListener);
         column2.addListener(SWT.Selection, sortListener);
         column3.addListener(SWT.Selection, sortListener);
+        column4.addListener(SWT.Selection, sortListener);
+        column5.addListener(SWT.Selection, sortListener);
+        column6.addListener(SWT.Selection, sortListener);
         table.setSortDirection(SWT.UP);
         table.setSortColumn(column1);
 
@@ -118,7 +141,7 @@ public class PDFCaptain {
 
         setMenu(shell, table);
 
-        shell.setSize(800, 600);
+        shell.setSize(1024, 768);
         shell.open();
         while (!shell.isDisposed()) {
             if (!display.readAndDispatch()) {
@@ -155,16 +178,6 @@ public class PDFCaptain {
                         return s1.compareToIgnoreCase(s2) < 0 ? -1 : 1;
                     }
                     return s1.compareToIgnoreCase(s2) < 0 ? 1 : -1;
-                } else if (clickedColumn == columns[1]) {
-                    int i1 = Integer.parseInt(e1[1]);
-                    int i2 = Integer.parseInt(e2[1]);
-                    if (i1 == i2) {
-                        return 0;
-                    }
-                    if (direction == SWT.UP) {
-                        return i1 < i2 ? -1 : 1;
-                    }
-                    return i1 < i2 ? 1 : -1;
                 } else if (clickedColumn == columns[2]) {
                     Timestamp t1 = Timestamp.valueOf(e1[2]);
                     Timestamp t2 = Timestamp.valueOf(e2[2]);
@@ -175,6 +188,16 @@ public class PDFCaptain {
                         return t1.compareTo(t2) < 0 ? -1 : 1;
                     }
                     return t1.compareTo(t2) < 0 ? 1 : -1;
+                } else if (clickedColumn == columns[5]) {
+                    int i1 = Integer.parseInt(e1[5]);
+                    int i2 = Integer.parseInt(e2[5]);
+                    if (i1 == i2) {
+                        return 0;
+                    }
+                    if (direction == SWT.UP) {
+                        return i1 < i2 ? -1 : 1;
+                    }
+                    return i1 < i2 ? 1 : -1;
                 }
                 return 0;
             });
@@ -361,9 +384,12 @@ public class PDFCaptain {
                         if (file.getName().toLowerCase().endsWith(".pdf")) {
                             final FileInfo fileInfo = new FileInfo();
                             fileInfo.fileName = file.getName();
-                            fileInfo.fileSize = String.valueOf(file.length());
+                            fileInfo.title = "test";
                             final String timestamp = new Timestamp(file.lastModified()).toString();
-                            fileInfo.modified = timestamp.substring(0, timestamp.length() - 4);
+                            fileInfo.creationDate = timestamp.substring(0, timestamp.lastIndexOf('.'));
+                            fileInfo.numberOfPages = "100";
+                            fileInfo.pageSize = "Letter";
+                            fileInfo.fileSize = String.valueOf(file.length());
                             fileList.add(fileInfo);
                         }
                     }
@@ -454,6 +480,9 @@ public class PDFCaptain {
 
 class FileInfo {
     String fileName;
+    String title;
+    String creationDate;
+    String numberOfPages;
+    String pageSize;
     String fileSize;
-    String modified;
 }
