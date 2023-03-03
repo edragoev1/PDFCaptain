@@ -74,6 +74,7 @@ public class PDFCaptain {
         for (TableColumn column : table.getColumns()) {
             column.pack();
         }
+        column4.setWidth(column4.getWidth() + 20);
 
         table.addListener(SWT.SetData, event -> {
             TableItem item = (TableItem) event.item;
