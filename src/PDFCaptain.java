@@ -414,16 +414,7 @@ public class PDFCaptain {
                 for (File file : files) {
                     if (file.isFile()) {
                         if (file.getName().toLowerCase().endsWith(".pdf")) {
-                            final FileInfo fileInfo = new FileInfo();
-                            fileInfo.fileName = file.getName();
-                            fileInfo.setFileInfo(file.getName());
-                            // fileInfo.title = String.valueOf(new Random().nextInt()); // "Test";
-                            final String timestamp = new Timestamp(file.lastModified()).toString();
-                            fileInfo.creationDate = timestamp.substring(0, timestamp.lastIndexOf('.'));
-                            // fileInfo.numberOfPages = String.valueOf(new Random().nextInt());
-                            // fileInfo.pageSize = "Letter";
-                            fileInfo.fileSize = String.valueOf(file.length());
-                            fileList.add(fileInfo);
+                            fileList.add(new FileInfo(file));
                         }
                     }
                 }
@@ -515,12 +506,12 @@ class FileInfo {
     String fileName;
     String title = "";
     String creationDate;
-    String numberOfPages;
+    String numberOfPages = "0";
     String pageSize = "";
     String fileSize;
 
-    public void setFileInfo(String fileName) throws Exception {
-        this.fileName = fileName;
+    public FileInfo(File file) throws Exception {
+        this.fileName = file.getName();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         List<String> command = new ArrayList<>();
         command.add("pdfinfo");
@@ -554,5 +545,8 @@ class FileInfo {
                 }
             }
         }
+        final String timestamp = new Timestamp(file.lastModified()).toString();
+        creationDate = timestamp.substring(0, timestamp.lastIndexOf('.'));
+        fileSize = String.valueOf(file.length());
     }
 }
