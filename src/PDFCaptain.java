@@ -312,7 +312,7 @@ public class PDFCaptain {
         writeToSocket(ipAddress, command);
     }
 
-    private static void writeToSocket(
+    protected static void writeToSocket(
             final String ipAddress, final List<String> command) throws IOException {
 /*
         System.out.println(ipAddress);
@@ -332,31 +332,5 @@ public class PDFCaptain {
             }
             output.flush();
         }
-    }
-
-    private void printFileUsingGS(
-            final String ipAddress,
-            final String fileName,
-            final String pageList) throws Exception {
-        List<String> command = new ArrayList<>();
-        command.add("/usr/local/bin/gs");
-        command.add("-dQUIET");
-        command.add("-dSAFER");
-        command.add("-dBATCH");
-        command.add("-dNOPAUSE");
-        command.add("-dFIXEDMEDIA");
-        command.add("-dPSFitPage");
-        command.add("-sPAPERSIZE=letter");
-        command.add("-sDEVICE=ps2write");
-        command.add("-sOutputFile=-");
-        if (pageList != null) {
-            command.add("-sPageList=" + pageList);
-        }
-        command.add("-c");
-        command.add("save");
-        command.add("pop");
-        command.add("-f");
-        command.add(fileName);
-        writeToSocket(ipAddress, command);
     }
 }
