@@ -47,13 +47,13 @@ public class PDFCaptain {
         table.addListener(SWT.MouseDoubleClick, event -> {
             TableItem[] items = table.getSelection();
             if (items.length > 0) {
-                openPrintDialog(shell, items);
+                new PrintDialog(shell, items);
             }
         });
         table.addListener(KeyDown, event -> {
             TableItem[] items = table.getSelection();
             if (event.keyCode == SWT.CR) {
-                openPrintDialog(shell, items);
+                new PrintDialog(shell, items);
             }
         });
 
@@ -131,7 +131,7 @@ public class PDFCaptain {
         button2.addListener(SWT.Selection, event -> {
             TableItem[] items = table.getSelection();
             if (items.length > 0) {
-                openPrintDialog(shell, items);
+                new PrintDialog(shell, items);
             }
         });
 
@@ -260,7 +260,7 @@ public class PDFCaptain {
         item2.addListener(SWT.Selection, event -> {
             final TableItem[] items = table.getSelection();
             if (items.length > 0) {
-                openPrintDialog(shell, items);
+                new PrintDialog(shell, items);
             }
         });
         table.setMenu(menu);
@@ -430,7 +430,7 @@ public class PDFCaptain {
         return fileList;
     }
 
-    private static void printFile(
+    protected static void printFile(
             final String ipAddress,
             final String fileName,
             final String firstPage,
