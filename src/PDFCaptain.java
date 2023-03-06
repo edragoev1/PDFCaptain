@@ -34,7 +34,10 @@ public class PDFCaptain {
 
     public static void main(String[] args) throws Exception {
         String homeFolder = PDFCaptain.class.getResource(".").getPath();
-        homeFolder = homeFolder.substring(0, homeFolder.indexOf("/out/production/"));
+        int index = homeFolder.indexOf("/out/production/");
+        if (index > 0) {
+            homeFolder = homeFolder.substring(0, index);
+        }
         if (args.length > 0) {
             documentsFolder = args[0];
         } else {
