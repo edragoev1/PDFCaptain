@@ -31,7 +31,7 @@ import static org.eclipse.swt.SWT.KeyDown;
 
 public class PDFCaptain {
     // final static String documentsFolder = "/home/eugene/Documents";
-    final static String documentsFolder = ".";
+    final static String documentsFolder = "pdf";
 
     public static void main(String[] args) throws Exception {
 
