@@ -38,7 +38,7 @@ public class Xpdf {
         command.add("-level3");
         command.add("-paper");
         command.add("letter");
-        command.add(fileName);
+        command.add(PDFCaptain.documentsFolder + "/" + fileName);
         command.add("-");
         PDFCaptain.writeToSocket(ipAddress, command);
     }

@@ -24,7 +24,7 @@ public class Ghostscript {
             final String fileName,
             final String pageList) throws Exception {
         List<String> command = new ArrayList<>();
-        command.add("/usr/local/bin/gs");
+        command.add("gs");
         command.add("-dQUIET");
         command.add("-dSAFER");
         command.add("-dBATCH");

@@ -30,8 +30,11 @@ import java.util.List;
 import static org.eclipse.swt.SWT.KeyDown;
 
 public class PDFCaptain {
+    final static String documentsFolder = "/home/eugene/Documents";
+
     public static void main(String[] args) throws Exception {
-        java.util.List<FileInfo> list = getFileList(".");
+
+        java.util.List<FileInfo> list = getFileList(documentsFolder);
 
         Display display = new Display();
         Shell shell = new Shell(display);
@@ -129,7 +132,8 @@ public class PDFCaptain {
         button1.addListener(SWT.Selection, event -> {
             TableItem[] items = table.getSelection();
             if (items.length > 0) {
-                ProcessBuilder pb = new ProcessBuilder("firefox", items[0].getText(0));
+                ProcessBuilder pb = new ProcessBuilder(
+                        "firefox", documentsFolder + "/" + items[0].getText(0));
                 try {
                     pb.start();
                 } catch (IOException e) {
@@ -153,7 +157,7 @@ public class PDFCaptain {
         table.addListener(SWT.Selection, event -> {
             TableItem[] items = table.getSelection();
             if (items.length > 0) {
-                label1.setText(items[0].getText(0));
+                label1.setText(documentsFolder + "/" + items[0].getText(0));
             }
         });
 
@@ -262,7 +266,8 @@ public class PDFCaptain {
         item1.addListener(SWT.Selection, event -> {
             final TableItem[] items = table.getSelection();
             if (items.length > 0) {
-                final ProcessBuilder pb = new ProcessBuilder("firefox", items[0].getText(0));
+                final ProcessBuilder pb = new ProcessBuilder(
+                        "firefox", documentsFolder + "/" + items[0].getText(0));
                 try {
                     pb.start();
                 } catch (IOException e) {

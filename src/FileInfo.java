@@ -38,7 +38,7 @@ public class FileInfo {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         List<String> command = new ArrayList<>();
         command.add("pdfinfo");
-        command.add(fileName);
+        command.add(file.getPath());
         final var process = new ProcessBuilder(command).start();
         final var input = process.getInputStream();
         final var buf = new byte[4096];
