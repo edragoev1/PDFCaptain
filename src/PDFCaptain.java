@@ -30,11 +30,16 @@ import java.util.List;
 import static org.eclipse.swt.SWT.KeyDown;
 
 public class PDFCaptain {
-    // final static String documentsFolder = "/home/eugene/Documents";
-    final static String documentsFolder = "pdf";
+    static String documentsFolder;
 
     public static void main(String[] args) throws Exception {
-
+        String homeFolder = PDFCaptain.class.getResource(".").getPath();
+        homeFolder = homeFolder.substring(0, homeFolder.indexOf("/out/production/"));
+        if (args.length > 0) {
+            documentsFolder = args[0];
+        } else {
+            documentsFolder = homeFolder + "/pdf";
+        }
         java.util.List<FileInfo> list = getFileList(documentsFolder);
 
         Display display = new Display();
