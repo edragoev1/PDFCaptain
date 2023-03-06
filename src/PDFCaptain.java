@@ -26,6 +26,7 @@ import java.net.Socket;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static org.eclipse.swt.SWT.KeyDown;
 
@@ -33,7 +34,7 @@ public class PDFCaptain {
     static String documentsFolder;
 
     public static void main(String[] args) throws Exception {
-        String homeFolder = PDFCaptain.class.getResource(".").getPath();
+        String homeFolder = Objects.requireNonNull(PDFCaptain.class.getResource(".")).getPath();
         int index = homeFolder.indexOf("/out/production/");
         if (index > 0) {
             homeFolder = homeFolder.substring(0, index);
