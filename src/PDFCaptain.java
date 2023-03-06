@@ -30,7 +30,8 @@ import java.util.List;
 import static org.eclipse.swt.SWT.KeyDown;
 
 public class PDFCaptain {
-    final static String documentsFolder = "/home/eugene/Documents";
+    // final static String documentsFolder = "/home/eugene/Documents";
+    final static String documentsFolder = ".";
 
     public static void main(String[] args) throws Exception {
 
