@@ -276,15 +276,11 @@ public class PDFCaptain {
             });
             // Update data displayed in table
             table.setSortDirection(dir);
-
-
             for (int i = 0; i < tableData.size(); i++) {
                 String[] row = tableData.get(i);
                 TableItem item = table.getItem(i);
                 item.setText(row);
             }
-
-            // table.clearAll();
         };
     }
 
