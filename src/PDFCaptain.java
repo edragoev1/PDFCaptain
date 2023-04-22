@@ -87,21 +87,21 @@ public class PDFCaptain {
         List<String[]> tableData = new ArrayList<>();
         setTableData(table, tableData, getFileList(documentsFolder));
 
-        for (TableColumn column : table.getColumns()) {
-            column.pack();
-        }
         column4.setWidth(column4.getWidth() + 20);
         table.addListener(SWT.SetData, event -> {
             TableItem item = (TableItem) event.item;
-            String[] row = tableData.get(table.indexOf(item));
-            item.setText(new String[]{
-                    row[0],
-                    row[1],
-                    row[2],
-                    row[3],
-                    row[4],
-                    row[5]
-            });
+            int index2 = table.indexOf(item);
+            if (index2 < tableData.size()) {
+                String[] row = tableData.get(index2);
+                item.setText(new String[]{
+                        row[0],
+                        row[1],
+                        row[2],
+                        row[3],
+                        row[4],
+                        row[5]
+                });
+            }
         });
 
         Listener sortListener = getSortListener(table, tableData);
@@ -202,6 +202,9 @@ public class PDFCaptain {
             tableData.add(row);
             TableItem item = new TableItem(table, SWT.NONE);
             item.setText(row);
+        }
+        for (TableColumn column : table.getColumns()) {
+            column.pack();
         }
     }
 
