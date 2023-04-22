@@ -89,10 +89,9 @@ public class PDFCaptain {
 
         column4.setWidth(column4.getWidth() + 20);
         table.addListener(SWT.SetData, event -> {
-            TableItem item = (TableItem) event.item;
-            int index2 = table.indexOf(item);
-            if (index2 < tableData.size()) {
-                String[] row = tableData.get(index2);
+            for (int i = 0; i < tableData.size(); i++) {
+                String[] row = tableData.get(i);
+                TableItem item = table.getItem(i);
                 item.setText(row);
             }
         });
@@ -180,7 +179,8 @@ public class PDFCaptain {
         display.dispose();
     }
 
-    private static void setTableData(Table table, List<String[]> tableData, List<FileInfo> list) {
+    private static void setTableData(
+            Table table, List<String[]> tableData, List<FileInfo> list) {
         table.clearAll();
         tableData.clear();
         for (FileInfo fileInfo : list) {
