@@ -85,7 +85,35 @@ public class PDFCaptain {
             }
         });
 
-        setTableData(table, list, column1, column2, column3, column4, column5, column6);
+        List<String[]> tableData = new ArrayList<>();
+        setTableData(table, tableData, list);
+
+        for (TableColumn column : table.getColumns()) {
+            column.pack();
+        }
+        column4.setWidth(column4.getWidth() + 20);
+        table.addListener(SWT.SetData, event -> {
+            TableItem item = (TableItem) event.item;
+            String[] row = tableData.get(table.indexOf(item));
+            item.setText(new String[]{
+                    row[0],
+                    row[1],
+                    row[2],
+                    row[3],
+                    row[4],
+                    row[5]
+            });
+        });
+
+        Listener sortListener = getSortListener(table, tableData);
+        column1.addListener(SWT.Selection, sortListener);
+        column2.addListener(SWT.Selection, sortListener);
+        column3.addListener(SWT.Selection, sortListener);
+        column4.addListener(SWT.Selection, sortListener);
+        column5.addListener(SWT.Selection, sortListener);
+        column6.addListener(SWT.Selection, sortListener);
+        table.setSortDirection(SWT.UP);
+        table.setSortColumn(column1);
 
         final Composite composite = new Composite(shell, SWT.NONE);
         composite.setLayout(new GridLayout(4, false));
@@ -106,11 +134,7 @@ public class PDFCaptain {
             final String selectedFolder = dialog.open();
             documentsFolder = selectedFolder;
             try {
-                List<FileInfo> list2 = getFileList(documentsFolder);
-                setTableData(
-                        table,
-                        list2,
-                        column1, column2, column3, column4, column5, column6);
+                setTableData(table, tableData, getFileList(documentsFolder));
             } catch (Exception exception) {
             }
         });
@@ -164,19 +188,9 @@ public class PDFCaptain {
         display.dispose();
     }
 
-    private static void setTableData(
-            Table table,
-            List<FileInfo> list,
-            TableColumn column1,
-            TableColumn column2,
-            TableColumn column3,
-            TableColumn column4,
-            TableColumn column5,
-            TableColumn column6) {
-        table.deselectAll();
-        // TODO:
-        // table.clearAll();
-        List<String[]> tableData = new ArrayList<>();
+    private static void setTableData(Table table, List<String[]> tableData, List<FileInfo> list) {
+        table.clearAll();
+        tableData.clear();
         for (FileInfo fileInfo : list) {
             String[] row = new String[]{
                     fileInfo.fileName,
@@ -190,31 +204,6 @@ public class PDFCaptain {
             TableItem item = new TableItem(table, SWT.NONE);
             item.setText(row);
         }
-        for (TableColumn column : table.getColumns()) {
-            column.pack();
-        }
-        column4.setWidth(column4.getWidth() + 20);
-        table.addListener(SWT.SetData, event -> {
-            TableItem item = (TableItem) event.item;
-            String[] row = tableData.get(table.indexOf(item));
-            item.setText(new String[]{
-                    row[0],
-                    row[1],
-                    row[2],
-                    row[3],
-                    row[4],
-                    row[5]
-            });
-        });
-        Listener sortListener = getSortListener(table, tableData);
-        column1.addListener(SWT.Selection, sortListener);
-        column2.addListener(SWT.Selection, sortListener);
-        column3.addListener(SWT.Selection, sortListener);
-        column4.addListener(SWT.Selection, sortListener);
-        column5.addListener(SWT.Selection, sortListener);
-        column6.addListener(SWT.Selection, sortListener);
-        table.setSortDirection(SWT.UP);
-        table.setSortColumn(column1);
     }
 
     private static Listener getSortListener(final Table table, final List<String[]> tableData) {
