@@ -174,7 +174,7 @@ public class PDFCaptain {
 
     private static void setTableData(
             Table table, List<String[]> tableData, List<FileInfo> list) {
-        table.clearAll();
+        table.removeAll();
         tableData.clear();
         for (FileInfo fileInfo : list) {
             String[] row = new String[]{
