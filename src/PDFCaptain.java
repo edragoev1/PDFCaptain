@@ -44,7 +44,6 @@ public class PDFCaptain {
         } else {
             documentsFolder = homeFolder + "/pdf";
         }
-        java.util.List<FileInfo> list = getFileList(documentsFolder);
 
         Display display = new Display();
         Shell shell = new Shell(display);
@@ -86,7 +85,7 @@ public class PDFCaptain {
         });
 
         List<String[]> tableData = new ArrayList<>();
-        setTableData(table, tableData, list);
+        setTableData(table, tableData, getFileList(documentsFolder));
 
         for (TableColumn column : table.getColumns()) {
             column.pack();
