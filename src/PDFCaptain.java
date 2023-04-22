@@ -93,14 +93,7 @@ public class PDFCaptain {
             int index2 = table.indexOf(item);
             if (index2 < tableData.size()) {
                 String[] row = tableData.get(index2);
-                item.setText(new String[]{
-                        row[0],
-                        row[1],
-                        row[2],
-                        row[3],
-                        row[4],
-                        row[5]
-                });
+                item.setText(row);
             }
         });
 
