@@ -115,11 +115,11 @@ public class PDFCaptain {
             DirectoryDialog dialog = new DirectoryDialog(shell);
             String platform = SWT.getPlatform();
             dialog.setFilterPath (platform.equals("win32") ? "c:\\" : "/home/eugene");
-            final String selectedFolder = dialog.open();
-            documentsFolder = selectedFolder;
+            documentsFolder = dialog.open();
             try {
                 setTableData(table, tableData, getFileList(documentsFolder));
             } catch (Exception exception) {
+                exception.printStackTrace();
             }
         });
 
@@ -337,13 +337,12 @@ public class PDFCaptain {
 
     protected static void writeToSocket(
             final String ipAddress, final List<String> command) throws IOException {
-/*
-        System.out.println(ipAddress);
-        for (String el : command) {
-            System.out.print(el + " ");
-        }
-        System.out.println();
-*/
+//        System.out.println(ipAddress);
+//        for (String el : command) {
+//            System.out.print(el + " ");
+//        }
+//        System.out.println();
+
         final var process = new ProcessBuilder(command).start();
         final var input = process.getInputStream();
         final var buf = new byte[4096];
