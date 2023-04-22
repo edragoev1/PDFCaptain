@@ -140,18 +140,13 @@ public class PDFCaptain {
         button1.setLayoutData(gridData);
         button1.setText("Folder");
         button1.addListener(SWT.Selection, event -> {
-            FileDialog dialog = new FileDialog(shell);
-            dialog.setText("Select Folder");
-            dialog.setFileName("/home/eugene/eBooks");
-            dialog.setFilterNames(new String [] {"PDF Files"});
-            dialog.setFilterExtensions(new String[] {"*.pdf"});
-            dialog.open();
-            String filename = dialog.getFileName();
-            if (filename == null) {
-                System.out.println("You cancelled the choice");
-            } else {
-                System.out.println("You chose " + filename);
-            }
+            DirectoryDialog dialog = new DirectoryDialog (shell);
+            String platform = SWT.getPlatform();
+            dialog.setFilterPath (platform.equals("win32") ? "c:\\" : "/home/eugene");
+            String selectedFolder = dialog.open();
+            documentsFolder = selectedFolder;
+            System.out.println(documentsFolder);
+            // TODO: Reload the Table!
         });
 
         final Button button2 = new Button(composite, SWT.PUSH);
