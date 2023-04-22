@@ -140,7 +140,7 @@ public class PDFCaptain {
         button1.setLayoutData(gridData);
         button1.setText("Folder");
         button1.addListener(SWT.Selection, event -> {
-            DirectoryDialog dialog = new DirectoryDialog (shell);
+            DirectoryDialog dialog = new DirectoryDialog(shell);
             String platform = SWT.getPlatform();
             dialog.setFilterPath (platform.equals("win32") ? "c:\\" : "/home/eugene");
             String selectedFolder = dialog.open();
