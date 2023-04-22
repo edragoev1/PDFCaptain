@@ -87,8 +87,6 @@ public class PDFCaptain {
         List<String[]> tableData = new ArrayList<>();
         setTableData(table, tableData, getFileList(documentsFolder));
 
-        column4.setWidth(column4.getWidth() + 20);
-
         Listener sortListener = getSortListener(table, tableData);
         column1.addListener(SWT.Selection, sortListener);
         column2.addListener(SWT.Selection, sortListener);
@@ -189,8 +187,11 @@ public class PDFCaptain {
             TableItem item = new TableItem(table, SWT.NONE);
             item.setText(row);
         }
+        int[] widths = {250, 350, 100, 100, 100, 100};
+        int i = 0;
         for (TableColumn column : table.getColumns()) {
-            column.pack();
+            column.setWidth(widths[i]);
+            i++;
         }
     }
 
