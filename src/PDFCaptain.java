@@ -173,7 +173,9 @@ public class PDFCaptain {
             TableColumn column4,
             TableColumn column5,
             TableColumn column6) {
-        table.clearAll();
+        table.deselectAll();
+        // TODO:
+        // table.clearAll();
         List<String[]> tableData = new ArrayList<>();
         for (FileInfo fileInfo : list) {
             String[] row = new String[]{
