@@ -128,7 +128,7 @@ public class PDFCaptain {
         table.setSortColumn(column1);
 
         final Composite composite = new Composite(shell, SWT.NONE);
-        composite.setLayout(new GridLayout(3, false));
+        composite.setLayout(new GridLayout(4, false));
         composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
         final Label label1 = new Label(composite, SWT.LEFT);
@@ -138,8 +138,27 @@ public class PDFCaptain {
         GridData gridData = new GridData(SWT.END, SWT.FILL, false, false);
         gridData.widthHint = 100;
         button1.setLayoutData(gridData);
-        button1.setText("Preview");
+        button1.setText("Folder");
         button1.addListener(SWT.Selection, event -> {
+            FileDialog dialog = new FileDialog(shell);
+            dialog.setText("Select Folder");
+            dialog.setFileName("/home/eugene/eBooks");
+            dialog.setFilterNames(new String[] {"*.pdf"});
+            dialog.open();
+            String filename = dialog.getFileName();
+            if (filename == null) {
+                System.out.println("You cancelled the choice");
+            } else {
+                System.out.println("You chose " + filename);
+            }
+        });
+
+        final Button button2 = new Button(composite, SWT.PUSH);
+        gridData = new GridData(SWT.END, SWT.FILL, false, false);
+        gridData.widthHint = 100;
+        button2.setLayoutData(gridData);
+        button2.setText("Preview");
+        button2.addListener(SWT.Selection, event -> {
             TableItem[] items = table.getSelection();
             if (items.length > 0) {
                 ProcessBuilder pb = new ProcessBuilder(
@@ -152,12 +171,12 @@ public class PDFCaptain {
             }
         });
 
-        final Button button2 = new Button(composite, SWT.PUSH);
+        final Button button3 = new Button(composite, SWT.PUSH);
         gridData = new GridData(SWT.END, SWT.FILL, false, false);
         gridData.widthHint = 100;
-        button2.setLayoutData(gridData);
-        button2.setText("Print");
-        button2.addListener(SWT.Selection, event -> {
+        button3.setLayoutData(gridData);
+        button3.setText("Print");
+        button3.addListener(SWT.Selection, event -> {
             TableItem[] items = table.getSelection();
             if (items.length > 0) {
                 new PrintDialog(shell, items);
