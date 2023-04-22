@@ -143,7 +143,8 @@ public class PDFCaptain {
             FileDialog dialog = new FileDialog(shell);
             dialog.setText("Select Folder");
             dialog.setFileName("/home/eugene/eBooks");
-            dialog.setFilterNames(new String[] {"*.pdf"});
+            dialog.setFilterNames(new String [] {"PDF Files"});
+            dialog.setFilterExtensions(new String[] {"*.pdf"});
             dialog.open();
             String filename = dialog.getFileName();
             if (filename == null) {
