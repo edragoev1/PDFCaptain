@@ -85,47 +85,7 @@ public class PDFCaptain {
             }
         });
 
-        List<String[]> tableData = new ArrayList<>();
-        for (FileInfo fileInfo : list) {
-            String[] row = new String[]{
-                    fileInfo.fileName,
-                    fileInfo.title,
-                    fileInfo.creationDate,
-                    fileInfo.numberOfPages,
-                    fileInfo.pageSize,
-                    fileInfo.fileSize
-            };
-            tableData.add(row);
-            TableItem item = new TableItem(table, SWT.NONE);
-            item.setText(row);
-        }
-        for (TableColumn column : table.getColumns()) {
-            column.pack();
-        }
-        column4.setWidth(column4.getWidth() + 20);
-
-        table.addListener(SWT.SetData, event -> {
-            TableItem item = (TableItem) event.item;
-            String[] row = tableData.get(table.indexOf(item));
-            item.setText(new String[]{
-                    row[0],
-                    row[1],
-                    row[2],
-                    row[3],
-                    row[4],
-                    row[5]
-            });
-        });
-
-        Listener sortListener = getSortListener(table, tableData);
-        column1.addListener(SWT.Selection, sortListener);
-        column2.addListener(SWT.Selection, sortListener);
-        column3.addListener(SWT.Selection, sortListener);
-        column4.addListener(SWT.Selection, sortListener);
-        column5.addListener(SWT.Selection, sortListener);
-        column6.addListener(SWT.Selection, sortListener);
-        table.setSortDirection(SWT.UP);
-        table.setSortColumn(column1);
+        setTableData(table, list, column1, column2, column3, column4, column5, column6);
 
         final Composite composite = new Composite(shell, SWT.NONE);
         composite.setLayout(new GridLayout(4, false));
@@ -143,10 +103,16 @@ public class PDFCaptain {
             DirectoryDialog dialog = new DirectoryDialog(shell);
             String platform = SWT.getPlatform();
             dialog.setFilterPath (platform.equals("win32") ? "c:\\" : "/home/eugene");
-            String selectedFolder = dialog.open();
+            final String selectedFolder = dialog.open();
             documentsFolder = selectedFolder;
-            System.out.println(documentsFolder);
-            // TODO: Reload the Table!
+            try {
+                List<FileInfo> list2 = getFileList(documentsFolder);
+                setTableData(
+                        table,
+                        list2,
+                        column1, column2, column3, column4, column5, column6);
+            } catch (Exception exception) {
+            }
         });
 
         final Button button2 = new Button(composite, SWT.PUSH);
@@ -196,6 +162,56 @@ public class PDFCaptain {
             }
         }
         display.dispose();
+    }
+
+    private static void setTableData(
+            Table table,
+            List<FileInfo> list,
+            TableColumn column1,
+            TableColumn column2,
+            TableColumn column3,
+            TableColumn column4,
+            TableColumn column5,
+            TableColumn column6) {
+        List<String[]> tableData = new ArrayList<>();
+        for (FileInfo fileInfo : list) {
+            String[] row = new String[]{
+                    fileInfo.fileName,
+                    fileInfo.title,
+                    fileInfo.creationDate,
+                    fileInfo.numberOfPages,
+                    fileInfo.pageSize,
+                    fileInfo.fileSize
+            };
+            tableData.add(row);
+            TableItem item = new TableItem(table, SWT.NONE);
+            item.setText(row);
+        }
+        for (TableColumn column : table.getColumns()) {
+            column.pack();
+        }
+        column4.setWidth(column4.getWidth() + 20);
+        table.addListener(SWT.SetData, event -> {
+            TableItem item = (TableItem) event.item;
+            String[] row = tableData.get(table.indexOf(item));
+            item.setText(new String[]{
+                    row[0],
+                    row[1],
+                    row[2],
+                    row[3],
+                    row[4],
+                    row[5]
+            });
+        });
+        Listener sortListener = getSortListener(table, tableData);
+        column1.addListener(SWT.Selection, sortListener);
+        column2.addListener(SWT.Selection, sortListener);
+        column3.addListener(SWT.Selection, sortListener);
+        column4.addListener(SWT.Selection, sortListener);
+        column5.addListener(SWT.Selection, sortListener);
+        column6.addListener(SWT.Selection, sortListener);
+        table.setSortDirection(SWT.UP);
+        table.setSortColumn(column1);
     }
 
     private static Listener getSortListener(final Table table, final List<String[]> tableData) {
